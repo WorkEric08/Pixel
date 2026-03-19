@@ -62,6 +62,8 @@ const App: React.FC = () => {
   const [detailDate, setDetailDate] = useState<Date | null>(null);
   
   const [isMobile, setIsMobile] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showPWAInstallSuccess, setShowPWAInstallSuccess] = useState(false);
   
   // Drag and Drop State
   const [draggedItemIndex, setDraggedItemIndex] = useState<number | null>(null);
@@ -122,7 +124,26 @@ const App: React.FC = () => {
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+
+    const handleBeforeInstall = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    const handleAppInstalled = () => {
+      setDeferredPrompt(null);
+      setShowPWAInstallSuccess(true);
+      setTimeout(() => setShowPWAInstallSuccess(false), 4000);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
   }, []);
 
   useEffect(() => {
@@ -367,27 +388,27 @@ const App: React.FC = () => {
           </div>
         ) : (
           !isSettingsOpen && !isEventModalOpen && (
-            <div className="fixed bottom-0 left-0 right-0 p-4 pb-8 bg-[#0a0a0c] border-t border-white/5 z-[60] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-full duration-500">
-              <div className="grid grid-cols-3 gap-2 max-w-4xl mx-auto">
+            <div className="fixed bottom-0 left-0 right-0 p-4 pb-10 bg-[#0a0a0c] border-t border-white/5 z-[60] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-full duration-500 after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[300px] after:bg-[#0a0a0c]">
+              <div className={`grid ${deferredPrompt ? 'grid-cols-4' : 'grid-cols-3'} gap-2 max-w-4xl mx-auto`}>
                 {/* Home */}
                 <button 
                   onClick={() => {
                     setActiveEventId(null);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-slate-900 border border-white/5 text-[var(--secondary)] active:scale-90 transition-all"
+                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-slate-900 border border-white/5 text-[var(--secondary)] active:scale-90 transition-all font-black"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
-                  <span className="text-[7px] font-black uppercase tracking-tighter">Início</span>
+                  <span className="text-[7px] uppercase tracking-tighter">Início</span>
                 </button>
 
                 {/* Alterar Período */}
                 <button 
                   onClick={() => setIsSettingsOpen(true)}
-                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-emerald-600 text-slate-950 active:scale-90 transition-all"
+                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-emerald-600 text-slate-950 active:scale-90 transition-all font-black"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
-                  <span className="text-[7px] font-black uppercase tracking-tighter">Período</span>
+                  <span className="text-[7px] uppercase tracking-tighter">Período</span>
                 </button>
 
                 {/* Novo Evento */}
@@ -396,8 +417,24 @@ const App: React.FC = () => {
                   className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-violet-600 text-white active:scale-90 transition-all font-black"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
-                  <span className="text-[7px] font-black uppercase tracking-tighter">Novo</span>
+                  <span className="text-[7px] uppercase tracking-tighter">Novo</span>
                 </button>
+
+                {/* Instalar App (PWA) */}
+                {deferredPrompt && (
+                  <button 
+                    onClick={() => {
+                      deferredPrompt.prompt();
+                      deferredPrompt.userChoice.then((choice: any) => {
+                        if (choice.outcome === 'accepted') setDeferredPrompt(null);
+                      });
+                    }}
+                    className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-blue-600 text-white active:scale-90 transition-all font-black animate-pulse"
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                    <span className="text-[7px] uppercase tracking-tighter">Baixar</span>
+                  </button>
+                )}
               </div>
             </div>
           )
@@ -672,6 +709,14 @@ const App: React.FC = () => {
             onSaveImages={(imgs) => handleSaveImages(getDateKey(detailDate), imgs)}
             onClearDay={() => handleClearDay(getDateKey(detailDate))}
           />
+        )}
+
+        {/* Notificação de PWA Instalado com Sucesso */}
+        {showPWAInstallSuccess && (
+          <div className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] bg-emerald-600 text-slate-950 font-black px-6 py-3 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-top-10 duration-500 uppercase tracking-widest text-[10px] flex items-center gap-3">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+            App Instalado com Sucesso!
+          </div>
         )}
       </div>
     </>

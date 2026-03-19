@@ -1,0 +1,18 @@
+{
+  "name": "Pixel Line Pro",
+  "short_name": "Pixel Line",
+  "description": "Seu contador de dias pixelado e jornada de metas.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#22c55e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3211/3211468.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
