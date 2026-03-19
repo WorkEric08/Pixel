@@ -61,6 +61,8 @@ const App: React.FC = () => {
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [detailDate, setDetailDate] = useState<Date | null>(null);
   
+  const [isMobile, setIsMobile] = useState(false);
+  
   // Drag and Drop State
   const [draggedItemIndex, setDraggedItemIndex] = useState<number | null>(null);
 
@@ -114,6 +116,13 @@ const App: React.FC = () => {
       setIsDarkMode(false);
       document.documentElement.classList.add('light');
     }
+
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   useEffect(() => {
@@ -284,7 +293,7 @@ const App: React.FC = () => {
     <>
       {!isAppReady && <SplashScreen onComplete={() => setIsAppReady(true)} />}
       
-      <div className={`max-w-4xl mx-auto p-4 md:p-8 flex flex-col gap-6 min-h-screen transition-all duration-1000 ${isAppReady ? 'opacity-100' : 'opacity-0 scale-95 blur-md'}`}>
+      <div className={`max-w-4xl mx-auto p-4 md:p-8 ${isMobile ? 'pb-36' : 'pb-8'} flex flex-col gap-6 min-h-screen transition-all duration-1000 ${isAppReady ? 'opacity-100' : 'opacity-0 scale-95 blur-md'}`}>
         <header className="relative flex items-center justify-between bg-[var(--header-bg)] p-2 md:p-3 rounded-xl border border-[var(--secondary)] border-opacity-20 backdrop-blur-2xl shadow-xl">
           {/* Esquerda: Logo */}
           <div className="flex items-center gap-4 pl-2 z-10">
@@ -344,15 +353,19 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        <div className="grid grid-cols-2 gap-2 md:gap-4">
-          <button onClick={() => setIsSettingsOpen(true)} className="group relative overflow-hidden bg-emerald-600 hover:bg-emerald-500 text-slate-950 p-3.5 md:p-4 rounded-xl font-black uppercase tracking-widest text-[9px] md:text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
-            Alterar Período
-          </button>
-          <button onClick={() => setIsEventModalOpen(true)} className="group relative overflow-hidden bg-violet-500 hover:bg-violet-400 text-white p-3.5 md:p-4 rounded-xl font-black uppercase tracking-widest text-[9px] md:text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
-            Novo Evento
-          </button>
+        <div className={`
+          ${isMobile ? 'fixed bottom-0 left-0 right-0 p-4 pb-8 bg-[var(--header-bg)]/90 backdrop-blur-xl border-t border-[var(--secondary)]/10 z-[60] shadow-[0_-10px_40px_rgba(0,0,0,0.3)] animate-in slide-in-from-bottom-full duration-700' : 'relative'} transition-all
+        `}>
+          <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-4xl mx-auto">
+            <button onClick={() => setIsSettingsOpen(true)} className="group relative overflow-hidden bg-emerald-600 hover:bg-emerald-500 text-slate-950 p-3.5 md:p-4 rounded-xl font-black uppercase tracking-widest text-[9px] md:text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
+              Alterar Período
+            </button>
+            <button onClick={() => setIsEventModalOpen(true)} className="group relative overflow-hidden bg-violet-500 hover:bg-violet-400 text-white p-3.5 md:p-4 rounded-xl font-black uppercase tracking-widest text-[9px] md:text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
+              Novo Evento
+            </button>
+          </div>
         </div>
 
         <div className="bg-[var(--header-bg)] backdrop-blur-2xl rounded-xl p-6 border border-[var(--secondary)] border-opacity-20 shadow-xl transition-all min-h-[175px] flex flex-col justify-between overflow-hidden">
