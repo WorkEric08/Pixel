@@ -64,6 +64,7 @@ const App: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showPWAInstallSuccess, setShowPWAInstallSuccess] = useState(false);
+  const [showBrowserTip, setShowBrowserTip] = useState(false);
   
   // Drag and Drop State
   const [draggedItemIndex, setDraggedItemIndex] = useState<number | null>(null);
@@ -138,6 +139,19 @@ const App: React.FC = () => {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstall);
     window.addEventListener('appinstalled', handleAppInstalled);
+
+    // Detecção de compatibilidade de navegador para PWA
+    const ua = navigator.userAgent;
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
+    
+    if (isMobileDevice && !isStandalone) {
+      const isChrome = /Chrome/.test(ua) || /CriOS/.test(ua);
+      const isSafari = /Safari/.test(ua) && !/Chrome/.test(ua) && !/CriOS/.test(ua);
+      if (!isChrome && !isSafari) {
+        setShowBrowserTip(true);
+      }
+    }
 
     return () => {
       window.removeEventListener('resize', checkMobile);
@@ -388,7 +402,7 @@ const App: React.FC = () => {
           </div>
         ) : (
           !isSettingsOpen && !isEventModalOpen && (
-            <div className="fixed bottom-0 left-0 right-0 p-4 pb-10 bg-[#0a0a0c] border-t border-white/5 z-[60] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-full duration-500 after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[300px] after:bg-[#0a0a0c]">
+            <div className="fixed bottom-0 left-0 right-0 p-4 pb-[calc(1.5rem + env(safe-area-inset-bottom, 12px))] bg-[#0a0a0c] border-t border-white/5 z-[60] shadow-[0_-20px_60px_rgba(0,0,0,0.8)] animate-in slide-in-from-bottom-full duration-500 after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[#0a0a0c]">
               <div className={`grid ${deferredPrompt ? 'grid-cols-4' : 'grid-cols-3'} gap-2 max-w-4xl mx-auto`}>
                 {/* Home */}
                 <button 
@@ -429,10 +443,10 @@ const App: React.FC = () => {
                         if (choice.outcome === 'accepted') setDeferredPrompt(null);
                       });
                     }}
-                    className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-blue-600 text-white active:scale-90 transition-all font-black animate-pulse"
+                    className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-blue-600 text-white active:scale-90 transition-all font-black"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
-                    <span className="text-[7px] uppercase tracking-tighter">Baixar</span>
+                    <span className="text-[7px] uppercase tracking-tighter">Instalar</span>
                   </button>
                 )}
               </div>
@@ -716,6 +730,24 @@ const App: React.FC = () => {
           <div className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] bg-emerald-600 text-slate-950 font-black px-6 py-3 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-top-10 duration-500 uppercase tracking-widest text-[10px] flex items-center gap-3">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
             App Instalado com Sucesso!
+          </div>
+        )}
+
+        {/* Dica de Navegador para PWA */}
+        {showBrowserTip && (
+          <div className="fixed bottom-32 left-4 right-4 z-[50] bg-slate-900 border border-blue-500/30 p-4 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+             <div className="flex items-start gap-3">
+               <div className="bg-blue-500/20 p-2 rounded-lg">
+                 <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
+               </div>
+               <div className="flex-1">
+                 <h4 className="text-[10px] font-black uppercase tracking-tight text-white mb-1">Dica de Instalação</h4>
+                 <p className="text-[9px] text-[var(--secondary)] font-medium leading-relaxed">Para uma melhor experiência e para instalar o app, recomendamos abrir o site no **Google Chrome** ou **Safari**.</p>
+               </div>
+               <button onClick={() => setShowBrowserTip(false)} className="text-[var(--secondary)] hover:text-white">
+                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+               </button>
+             </div>
           </div>
         )}
       </div>
