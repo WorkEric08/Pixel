@@ -293,7 +293,7 @@ const App: React.FC = () => {
     <>
       {!isAppReady && <SplashScreen onComplete={() => setIsAppReady(true)} />}
       
-      <div className={`max-w-4xl mx-auto p-4 md:p-8 ${isMobile ? 'pb-36' : 'pb-8'} flex flex-col gap-6 min-h-screen transition-all duration-1000 ${isAppReady ? 'opacity-100' : 'opacity-0 scale-95 blur-md'}`}>
+      <div className={`max-w-4xl mx-auto p-4 md:p-8 ${isMobile && !isSettingsOpen && !isEventModalOpen ? 'pb-36' : 'pb-8'} flex flex-col gap-6 min-h-screen transition-all duration-1000 ${isAppReady ? 'opacity-100' : 'opacity-0 scale-95 blur-md'}`}>
         <header className="relative flex items-center justify-between bg-[var(--header-bg)] p-2 md:p-3 rounded-xl border border-[var(--secondary)] border-opacity-20 backdrop-blur-2xl shadow-xl">
           {/* Esquerda: Logo */}
           <div className="flex items-center gap-4 pl-2 z-10">
@@ -353,20 +353,55 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        <div className={`
-          ${isMobile ? 'fixed bottom-0 left-0 right-0 p-4 pb-8 bg-[var(--header-bg)]/90 backdrop-blur-xl border-t border-[var(--secondary)]/10 z-[60] shadow-[0_-10px_40px_rgba(0,0,0,0.3)] animate-in slide-in-from-bottom-full duration-700' : 'relative'} transition-all
-        `}>
-          <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-4xl mx-auto">
-            <button onClick={() => setIsSettingsOpen(true)} className="group relative overflow-hidden bg-emerald-600 hover:bg-emerald-500 text-slate-950 p-3.5 md:p-4 rounded-xl font-black uppercase tracking-widest text-[9px] md:text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
+        {/* Navegação Mobile / Desktop */}
+        {!isMobile ? (
+          <div className="grid grid-cols-2 gap-4">
+            <button onClick={() => setIsSettingsOpen(true)} className="group relative overflow-hidden bg-emerald-600 hover:bg-emerald-500 text-slate-950 p-4 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
               Alterar Período
             </button>
-            <button onClick={() => setIsEventModalOpen(true)} className="group relative overflow-hidden bg-violet-500 hover:bg-violet-400 text-white p-3.5 md:p-4 rounded-xl font-black uppercase tracking-widest text-[9px] md:text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
+            <button onClick={() => setIsEventModalOpen(true)} className="group relative overflow-hidden bg-violet-500 hover:bg-violet-400 text-white p-4 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
               Novo Evento
             </button>
           </div>
-        </div>
+        ) : (
+          !isSettingsOpen && !isEventModalOpen && (
+            <div className="fixed bottom-0 left-0 right-0 p-4 pb-8 bg-[#0a0a0c] border-t border-white/5 z-[60] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-full duration-500">
+              <div className="grid grid-cols-3 gap-2 max-w-4xl mx-auto">
+                {/* Home */}
+                <button 
+                  onClick={() => {
+                    setActiveEventId(null);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-slate-900 border border-white/5 text-[var(--secondary)] active:scale-90 transition-all"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                  <span className="text-[7px] font-black uppercase tracking-tighter">Início</span>
+                </button>
+
+                {/* Alterar Período */}
+                <button 
+                  onClick={() => setIsSettingsOpen(true)}
+                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-emerald-600 text-slate-950 active:scale-90 transition-all"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
+                  <span className="text-[7px] font-black uppercase tracking-tighter">Período</span>
+                </button>
+
+                {/* Novo Evento */}
+                <button 
+                  onClick={() => setIsEventModalOpen(true)}
+                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-violet-600 text-white active:scale-90 transition-all font-black"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
+                  <span className="text-[7px] font-black uppercase tracking-tighter">Novo</span>
+                </button>
+              </div>
+            </div>
+          )
+        )}
 
         <div className="bg-[var(--header-bg)] backdrop-blur-2xl rounded-xl p-6 border border-[var(--secondary)] border-opacity-20 shadow-xl transition-all min-h-[175px] flex flex-col justify-between overflow-hidden">
           <div className="flex flex-col">
