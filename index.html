@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel line Pro — Contador de Dias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --frame: #1e293b;
+            --accent: #22c55e;
+            --danger: #dc2626;
+            --action: #2563eb;
+            --event: #8b5cf6;
+            --secondary: #475569;
+            --container: #334155;
+            --highlight: #14b34e;
+            --borders: #036564;
+            --text: #f8fafc;
+            --header-bg: rgba(30, 41, 59, 0.4);
+            
+            /* Pixel colors */
+            --pixel-past: #0b3b26;
+            --pixel-future: #1e293b;
+            --pixel-weekend: #334155;
+            --pixel-today: #22c55e;
+            --pixel-target: #ffffff;
+            --pixel-event: #8b5cf6;
+            --pixel-special: #ffffff;
+            --pixel-border: rgba(0, 0, 0, 0.3);
+
+            /* Dynamic Glow Variables (will be set by JS) */
+            --pixel-today-glow: rgba(34, 197, 94, 0.6);
+            --pixel-target-glow: rgba(255, 255, 255, 0.7);
+            --pixel-event-glow: rgba(139, 92, 246, 0.6);
+
+            /* Picker Thumb Color */
+            --pixel-thumb: #e2e8f0;
+        }
+
+        :root.light {
+            --bg: #f8fafc;
+            --frame: #ffffff;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --action: #3b82f6;
+            --event: #7c3aed;
+            --secondary: #94a3b8;
+            --container: #e2e8f0;
+            --highlight: #059669;
+            --borders: #cbd5e1;
+            --text: #0f172a;
+            --header-bg: rgba(255, 255, 255, 0.6);
+            
+            /* Pixel colors light */
+            --pixel-past: #d1fae5;
+            --pixel-future: #f1f5f9;
+            --pixel-weekend: #e2e8f0;
+            --pixel-today: #10b981;
+            --pixel-target: #0f172a;
+            --pixel-event: #7c3aed;
+            --pixel-special: #0f172a;
+            --pixel-border: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        
+        .custom-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        /* Pixel Styling - Solid Colors with targeted Glow */
+        .pixel-border-style {
+            border: 1px solid var(--pixel-border);
+            position: relative;
+        }
+
+        .pixel-past { 
+            background-color: var(--pixel-past);
+            opacity: 0.8;
+        }
+        
+        .pixel-future { 
+            background-color: var(--pixel-future);
+        }
+
+        .pixel-weekend { 
+            background-color: var(--pixel-weekend);
+            opacity: 0.9;
+        }
+        
+        .pixel-today { 
+            background-color: var(--pixel-today);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 10px var(--pixel-today-glow);
+            z-index: 10;
+        }
+
+        .pixel-target { 
+            background-color: var(--pixel-target);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 12px var(--pixel-target-glow);
+            z-index: 10;
+        }
+
+        .pixel-event { 
+            background-color: var(--pixel-event);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 10px var(--pixel-event-glow);
+            z-index: 10;
+        }
+
+        .pixel-special {
+            background-color: var(--pixel-special);
+        }
+
+        /* Utility to remove glow in legend or specific places */
+        .pixel-no-glow {
+            box-shadow: none !important;
+        }
+
+        /* Custom Range Input Styling */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: var(--pixel-thumb);
+            cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+            margin-top: -2px;
+        }
+
+        /* Splash Animations */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes pixel-reveal {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .animate-scan {
+            animation: scanline 4s linear infinite;
+        }
+        
+        .animate-reveal {
+            animation: pixel-reveal 0.5s ease-out forwards;
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
