@@ -97,6 +97,7 @@ const App: React.FC = () => {
         if (parsed.pixelSize) setPixelSize(parsed.pixelSize);
         if (parsed.showDates !== undefined) setShowDates(parsed.showDates);
         if (parsed.isCalendarView !== undefined) setIsCalendarView(parsed.isCalendarView);
+        if (parsed.isLegendsMinimized !== undefined) setIsLegendsMinimized(parsed.isLegendsMinimized);
       } catch (e) {
         console.error("Failed to load state", e);
       }
@@ -128,7 +129,8 @@ const App: React.FC = () => {
       customColors,
       pixelSize,
       showDates,
-      isCalendarView
+      isCalendarView,
+      isLegendsMinimized
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
     
@@ -139,7 +141,7 @@ const App: React.FC = () => {
         document.documentElement.style.setProperty(`--pixel-${key}-glow`, glowColor);
       }
     });
-  }, [userName, userEmail, userBio, startDate, targetDate, events, customColors, notes, images, pixelSize, showDates, isCalendarView]);
+  }, [userName, userEmail, userBio, startDate, targetDate, events, customColors, notes, images, pixelSize, showDates, isCalendarView, isLegendsMinimized]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -304,21 +306,23 @@ const App: React.FC = () => {
           
           {/* Direita: Perfil e Tema */}
           <div className="flex items-center gap-3 z-10">
-            <div className="flex items-center gap-3 py-1 px-4 pr-1 rounded-full bg-white/5 border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.15)] backdrop-blur-md group hover:border-emerald-500/30 transition-all duration-300">
-              <span className={`text-[10px] md:text-xs font-black text-[var(--text)] uppercase tracking-[0.15em] opacity-90 group-hover:opacity-100 transition-opacity truncate max-w-[80px] md:max-w-[120px] ${!userName ? 'hidden' : 'inline-block'}`}>
-                {userName || 'Identidade'}
-              </span>
-              
-              <button 
-                onClick={() => setIsProfileOpen(true)}
-                className="relative flex items-center justify-center"
-              >
-                <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-slate-950 font-black relative z-10 border-2 border-[var(--frame)] group-hover:scale-110 transition-transform shadow-lg">
-                  {userName ? userName.charAt(0).toUpperCase() : '?'}
-                </div>
-                <div className="absolute inset-0 bg-emerald-500/40 rounded-full blur-md scale-110 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </button>
-            </div>
+            {userName && (
+              <div className="flex items-center gap-3 py-1 px-4 pr-1 rounded-full bg-white/5 border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.15)] backdrop-blur-md group hover:border-emerald-500/30 transition-all duration-300">
+                <span className="text-[10px] md:text-xs font-black text-[var(--text)] uppercase tracking-[0.15em] opacity-90 group-hover:opacity-100 transition-opacity truncate max-w-[80px] md:max-w-[120px] inline-block">
+                  {userName}
+                </span>
+                
+                <button 
+                  onClick={() => setIsProfileOpen(true)}
+                  className="relative flex items-center justify-center"
+                >
+                  <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-slate-950 font-black relative z-10 border-2 border-[var(--frame)] group-hover:scale-110 transition-transform shadow-lg">
+                    {userName.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="absolute inset-0 bg-emerald-500/40 rounded-full blur-md scale-110 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </button>
+              </div>
+            )}
 
             <button 
               onClick={toggleTheme} 
