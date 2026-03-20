@@ -32,7 +32,7 @@ const App: React.FC = () => {
     special: '#ffffff'
   };
 
-  const [isAppReady, setIsAppReady] = useState(false);
+  const [isAppReady, setIsAppReady] = useState(true);
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
   const [userBio, setUserBio] = useState<string>('');
@@ -152,6 +152,9 @@ const App: React.FC = () => {
         setShowBrowserTip(true);
       }
     }
+
+    // Marca como pronto imediatamente
+    setIsAppReady(true);
 
     return () => {
       window.removeEventListener('resize', checkMobile);
@@ -326,9 +329,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      {!isAppReady && <SplashScreen onComplete={() => setIsAppReady(true)} />}
-      
-      <div className={`max-w-4xl mx-auto p-4 md:p-8 ${isMobile && !isSettingsOpen && !isEventModalOpen ? 'pb-36' : 'pb-8'} flex flex-col gap-6 min-h-screen transition-all duration-1000 ${isAppReady ? 'opacity-100' : 'opacity-0 scale-95 blur-md'}`}>
+      <div className={`max-w-4xl mx-auto p-4 md:p-8 ${isMobile && !isSettingsOpen && !isEventModalOpen ? 'pb-36' : 'pb-8'} flex flex-col gap-6 min-h-screen transition-all duration-1000 opacity-100`}>
         <header className="relative flex items-center justify-between bg-[var(--header-bg)] p-2 md:p-3 rounded-xl border border-[var(--secondary)] border-opacity-20 backdrop-blur-2xl shadow-xl">
           {/* Esquerda: Logo */}
           <div className="flex items-center gap-3 pl-2 z-10">
@@ -401,7 +402,7 @@ const App: React.FC = () => {
           </div>
         ) : (
           !isSettingsOpen && !isEventModalOpen && (
-            <div className="fixed bottom-0 left-0 right-0 p-4 pb-[calc(1.5rem + env(safe-area-inset-bottom, 12px))] bg-[#0a0a0c] border-t border-white/5 z-[60] shadow-2xl animate-in slide-in-from-bottom-full duration-500 after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[#0a0a0c]">
+            <div className="fixed bottom-0 left-0 right-0 p-4 pb-[calc(1.5rem + env(safe-area-inset-bottom, 12px))] bg-[#0a0a0c] border-t border-white/5 z-[100] shadow-2xl animate-in slide-in-from-bottom-full duration-500 after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[#0a0a0c]">
               <div className={`grid ${deferredPrompt ? 'grid-cols-4' : 'grid-cols-3'} gap-2 max-w-4xl mx-auto`}>
                 {/* Home */}
                 <button 
@@ -563,7 +564,7 @@ const App: React.FC = () => {
               </button>
 
               {isVisualSettingsOpen && (
-                <div className="absolute top-full right-0 mt-3 w-72 bg-[var(--frame)] border border-[var(--secondary)] border-opacity-30 rounded-2xl shadow-2xl p-6 z-[100] backdrop-blur-xl animate-in fade-in slide-in-from-top-4 duration-300">
+                <div className="absolute top-full right-0 mt-3 w-72 bg-[var(--frame)] border border-[var(--secondary)] border-opacity-30 rounded-2xl shadow-2xl p-6 z-[90] backdrop-blur-xl animate-in fade-in slide-in-from-top-4 duration-300">
                   <div className="flex flex-col gap-6">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-black text-white uppercase tracking-widest">Ajustes de Visão</span>
