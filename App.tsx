@@ -331,18 +331,17 @@ const App: React.FC = () => {
       <div className={`max-w-4xl mx-auto p-4 md:p-8 ${isMobile && !isSettingsOpen && !isEventModalOpen ? 'pb-36' : 'pb-8'} flex flex-col gap-6 min-h-screen transition-all duration-1000 ${isAppReady ? 'opacity-100' : 'opacity-0 scale-95 blur-md'}`}>
         <header className="relative flex items-center justify-between bg-[var(--header-bg)] p-2 md:p-3 rounded-xl border border-[var(--secondary)] border-opacity-20 backdrop-blur-2xl shadow-xl">
           {/* Esquerda: Logo */}
-          <div className="flex items-center gap-4 pl-2 z-10">
-            <div className="relative w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-transform hover:scale-105">
-               <div className="grid grid-cols-2 gap-1">
-                  <div className="w-1.5 h-1.5 bg-slate-950 rounded-sm"></div>
-                  <div className="w-1.5 h-1.5 bg-slate-950 rounded-sm opacity-40"></div>
-                  <div className="w-1.5 h-1.5 bg-slate-950 rounded-sm opacity-10"></div>
-                  <div className="w-1.5 h-1.5 bg-slate-950 rounded-sm"></div>
-               </div>
+          <div className="flex items-center gap-3 pl-2 z-10">
+            <div className="relative w-10 h-10 bg-[#012b2a] rounded-xl flex items-center justify-center shadow-lg transition-transform hover:scale-105 border border-emerald-500/20">
+               <svg viewBox="0 0 100 100" className="w-6 h-6">
+                 <rect x="15" y="40" width="18" height="18" rx="4" fill="#12b886"/>
+                 <rect x="42" y="40" width="18" height="18" rx="4" fill="#12b886"/>
+                 <path d="M70 40 L88 49 L70 58 Z" fill="#12b886"/>
+               </svg>
             </div>
             <div className="flex flex-col">
               <h1 className="text-xs md:text-sm font-black tracking-tighter leading-none">
-                PIXEL <span className="text-emerald-500">LINE</span>
+                PIXEL <span className="text-[#12b886]">LINE</span>
               </h1>
               <span className="text-[5px] uppercase tracking-[0.2em] text-[var(--secondary)] font-bold">Pixel Journey</span>
             </div>
@@ -402,7 +401,7 @@ const App: React.FC = () => {
           </div>
         ) : (
           !isSettingsOpen && !isEventModalOpen && (
-            <div className="fixed bottom-0 left-0 right-0 p-4 pb-[calc(1.5rem + env(safe-area-inset-bottom, 12px))] bg-[#0a0a0c] border-t border-white/5 z-[60] shadow-[0_-20px_60px_rgba(0,0,0,0.8)] animate-in slide-in-from-bottom-full duration-500 after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[#0a0a0c]">
+            <div className="fixed bottom-0 left-0 right-0 p-4 pb-[calc(1.5rem + env(safe-area-inset-bottom, 12px))] bg-[#0a0a0c] border-t border-white/5 z-[60] shadow-2xl animate-in slide-in-from-bottom-full duration-500 after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[#0a0a0c]">
               <div className={`grid ${deferredPrompt ? 'grid-cols-4' : 'grid-cols-3'} gap-2 max-w-4xl mx-auto`}>
                 {/* Home */}
                 <button 

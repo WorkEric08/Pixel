@@ -70,13 +70,12 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
         
         {/* Logo Pixel Central */}
         <div className="relative mb-16">
-          <div className="w-20 h-20 bg-slate-900 border border-emerald-500/20 rounded-3xl flex items-center justify-center shadow-2xl animate-pulse">
-            <div className="grid grid-cols-2 gap-1.5">
-               <div className="w-4 h-4 bg-emerald-500 rounded-sm"></div>
-               <div className="w-4 h-4 bg-emerald-500/30 rounded-sm"></div>
-               <div className="w-4 h-4 bg-emerald-500/10 rounded-sm"></div>
-               <div className="w-4 h-4 bg-emerald-500 rounded-sm shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
-            </div>
+          <div className="w-24 h-24 bg-[#012b2a] border border-emerald-500/20 rounded-[2rem] flex items-center justify-center shadow-2xl">
+            <svg viewBox="0 0 100 100" className="w-12 h-12">
+              <rect x="15" y="40" width="18" height="18" rx="4" fill="#12b886"/>
+              <rect x="42" y="40" width="18" height="18" rx="4" fill="#12b886"/>
+              <path d="M70 40 L88 49 L70 58 Z" fill="#12b886"/>
+            </svg>
           </div>
           {/* Anéis orbitais */}
           <div className="absolute -inset-6 border border-emerald-500/10 rounded-full animate-ping opacity-20"></div>
