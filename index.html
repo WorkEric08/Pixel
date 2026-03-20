@@ -62,28 +62,29 @@
         }
 
         :root.light {
-            --bg: #f4f7fb;
-            --frame: #ffffff;
+            /* Clean & Premium Light Mode (Softened) */
+            --bg: #f3f4f6; /* Fundo acinzentado suave (tailing gray-100) */
+            --frame: #f9fafb; /* Off-white cremoso para cartões (tailing gray-50) */
             --accent: #10b981;
             --danger: #ef4444;
             --action: #3b82f6;
-            --event: #7c3aed;
+            --event: #8b5cf6;
             --secondary: #64748b;
-            --container: #e2e8f0;
+            --container: #e5e7eb; /* Cinza claro para inputs e miniaturas */
             --highlight: #059669;
-            --borders: #cbd5e1;
+            --borders: rgba(0, 0, 0, 0.05); /* Bordas com baixíssima opacidade */
             --text: #0f172a;
-            --header-bg: rgba(255, 255, 255, 0.7);
+            --header-bg: rgba(249, 250, 251, 0.85);
             
             /* Pixel colors light */
-            --pixel-past: #d1fae5;
-            --pixel-future: #e2e8f0;
-            --pixel-weekend: #cbd5e1;
+            --pixel-past: #d1fae5; /* Verde pastel e translúcido */
+            --pixel-future: #f1f5f9; /* Cinza gelo sutil */
+            --pixel-weekend: #e2e8f0; /* Cinza claro azulado */
             --pixel-today: #10b981;
             --pixel-target: #0f172a;
-            --pixel-event: #7c3aed;
+            --pixel-event: #8b5cf6;
             --pixel-special: #0f172a;
-            --pixel-border: rgba(0, 0, 0, 0.05);
+            --pixel-border: rgba(0, 0, 0, 0.04);
         }
 
         /* ===== PWA Native Behavior ===== */
@@ -132,14 +133,12 @@
             -webkit-touch-callout: default;
         }
 
-        /* Prevent context menu on long press */
-        img, a {
-            -webkit-touch-callout: none;
+        /* Tema Claro global overrides */
+        :root.light body {
+            background-color: var(--bg);
         }
-
-        /* Prevent tap highlight */
-        * {
-            -webkit-tap-highlight-color: transparent;
+        :root.light html {
+            background-color: var(--bg);
         }
 
         /* Smooth scroll behavior for app containers */

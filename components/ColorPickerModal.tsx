@@ -143,7 +143,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({ isOpen, label, curr
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setView(view === 'picker' ? 'presets' : 'picker')}
-              className={`p-2 rounded-xl border border-white/10 transition-all ${view === 'presets' ? 'bg-emerald-500 text-slate-900 border-emerald-400' : 'bg-slate-800 text-slate-400 hover:text-white'}`}
+              className={`p-2 rounded-xl border border-white/10 transition-all ${view === 'presets' ? 'bg-emerald-500 text-slate-900 border-emerald-400' : 'bg-[var(--container)] text-slate-400 hover:text-white'}`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />

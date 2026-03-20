@@ -621,7 +621,7 @@ const App: React.FC = () => {
                         <input 
                           type="range" min="8" max="24" value={pixelSize} 
                           onChange={(e) => setPixelSize(Number(e.target.value))}
-                          className="flex-1 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                          className="flex-1 h-1.5 bg-[var(--container)] rounded-lg appearance-none cursor-pointer accent-emerald-500"
                         />
                         <span className="text-[9px] text-[var(--secondary)] font-black opacity-40">MAX</span>
                       </div>
@@ -630,7 +630,7 @@ const App: React.FC = () => {
                     <div className="grid grid-cols-1 gap-3">
                       <button 
                         onClick={() => setShowDates(!showDates)}
-                        className={`px-4 py-2.5 rounded-xl border text-[9px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${showDates ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/10' : 'bg-slate-800 text-[var(--secondary)] border-[var(--secondary)] border-opacity-10 hover:border-emerald-500'}`}
+                        className={`px-4 py-2.5 rounded-xl border text-[9px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${showDates ? 'bg-emerald-500 text-white border-emerald-400 shadow-md shadow-emerald-500/10' : 'bg-[var(--bg)] text-[var(--secondary)] border-[var(--secondary)] border-opacity-10 hover:border-emerald-500'}`}
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         {showDates ? 'Ocultar Números' : 'Mostrar Números'}
@@ -638,7 +638,7 @@ const App: React.FC = () => {
 
                       <button 
                         onClick={() => setIsCalendarView(!isCalendarView)}
-                        className={`px-4 py-2.5 rounded-xl border text-[9px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${isCalendarView ? 'bg-violet-500 text-white border-violet-400 shadow-md shadow-violet-500/10' : 'bg-slate-800 text-[var(--secondary)] border-[var(--secondary)] border-opacity-10 hover:border-violet-500'}`}
+                        className={`px-4 py-2.5 rounded-xl border text-[9px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${isCalendarView ? 'bg-violet-500 text-white border-violet-400 shadow-md shadow-violet-500/10' : 'bg-[var(--bg)] text-[var(--secondary)] border-[var(--secondary)] border-opacity-10 hover:border-violet-500'}`}
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
                         {isCalendarView ? 'Modo Calendário' : 'Modo Fluxo'}
@@ -668,7 +668,7 @@ const App: React.FC = () => {
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-center p-12 space-y-6">
                 <div className="relative group">
-                  <div className="w-24 h-24 bg-slate-800/50 rounded-[2.5rem] flex items-center justify-center text-slate-700 border-2 border-dashed border-slate-700 group-hover:border-emerald-500/50 transition-all duration-500 group-hover:rotate-6">
+                  <div className="w-24 h-24 bg-[var(--frame)] rounded-[2.5rem] flex items-center justify-center text-[var(--secondary)] border-2 border-dashed border-[var(--secondary)] border-opacity-30 group-hover:border-emerald-500/50 transition-all duration-500 group-hover:rotate-6 shadow-sm">
                     <svg className="w-12 h-12 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                   </div>
                   <div className="absolute -inset-4 bg-emerald-500/5 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -679,7 +679,7 @@ const App: React.FC = () => {
                 </div>
                 <button 
                   onClick={() => setIsSettingsOpen(true)}
-                  className="px-12 py-4 bg-emerald-600 text-slate-950 font-black rounded-2xl text-[10px] uppercase tracking-widest shadow-[0_15px_35px_rgba(16,185,129,0.25)] active:scale-95 transition-all hover:bg-emerald-500"
+                  className="px-12 py-4 bg-emerald-600 text-white font-black rounded-2xl text-[10px] uppercase tracking-widest shadow-[0_15px_35px_rgba(16,185,129,0.25)] active:scale-95 transition-all hover:bg-emerald-500"
                 >
                   Configurar meu Objetivo
                 </button>

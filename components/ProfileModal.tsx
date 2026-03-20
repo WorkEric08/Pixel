@@ -19,7 +19,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, name, emai
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-xl animate-in fade-in duration-300">
-      <div className="bg-slate-900 w-full max-w-lg rounded-[2rem] border border-white/10 shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300">
+      <div className="bg-[var(--bg)] w-full max-w-lg rounded-[2rem] border border-white/10 shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300">
         
         {/* Header com Gradiente */}
         <div className="relative h-24 bg-gradient-to-r from-emerald-600/20 to-violet-600/20 flex items-end px-8 pb-4">
@@ -81,7 +81,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, name, emai
 
         {/* Footer Actions */}
         <div className="p-8 bg-slate-950/50 border-t border-white/5 flex gap-4">
-          <button onClick={onClose} className="flex-1 px-6 py-4 rounded-2xl bg-slate-800 text-slate-400 hover:text-white font-black transition-all uppercase tracking-widest text-[10px]">Descartar</button>
+          <button onClick={onClose} className="flex-1 px-6 py-4 rounded-2xl bg-[var(--frame)] text-slate-400 hover:text-white font-black transition-all uppercase tracking-widest text-[10px]">Descartar</button>
           <button 
             onClick={() => onSave(tempName, tempEmail, tempBio)} 
             className="flex-[2] px-6 py-4 rounded-2xl bg-emerald-600 text-slate-950 font-black hover:bg-emerald-500 transition-all uppercase tracking-widest text-[10px] shadow-[0_10px_20px_rgba(16,185,129,0.2)]"

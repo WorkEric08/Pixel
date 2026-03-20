@@ -28,8 +28,8 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-xl">
       <div className="bg-slate-900 w-full max-w-md rounded-xl p-6 md:p-8 border border-slate-700 shadow-2xl flex flex-col gap-5 animate-in fade-in zoom-in-95 duration-200">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-black text-white uppercase tracking-tighter">Novo Marco</h3>
-          <button onClick={onClose} className="p-2 hover:bg-slate-800 rounded-full text-slate-500 transition-colors">
+          <h3 className="text-lg font-black text-[var(--text)] uppercase tracking-tighter">Novo Marco</h3>
+          <button onClick={onClose} className="p-2 hover:bg-[var(--frame)] rounded-full text-slate-500 transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
@@ -42,7 +42,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ex: Viagem, Entrega..."
-              className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-all font-bold text-sm"
+              className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-4 py-3 text-[var(--text)] placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-all font-bold text-sm"
             />
           </div>
 
@@ -70,11 +70,11 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
           </div>
         </div>
 
-        <div className="flex gap-3 pt-4 border-t border-slate-800">
-          <button onClick={onClose} className="flex-1 p-3 rounded-lg bg-slate-800 text-slate-300 font-bold hover:bg-slate-700 transition-colors uppercase tracking-widest text-[10px]">Cancelar</button>
+        <div className="flex gap-3 pt-4 border-t border-[var(--borders)]">
+          <button onClick={onClose} className="flex-1 p-3 rounded-lg bg-[var(--frame)] text-[var(--text)] font-bold hover:bg-slate-700 transition-colors uppercase tracking-widest text-[10px]">Cancelar</button>
           <button 
             onClick={handleSave} 
-            className="flex-1 p-3 rounded-lg bg-violet-600 text-white font-black hover:bg-violet-500 transition-all uppercase tracking-widest text-[10px] shadow-lg shadow-violet-600/20"
+            className="flex-1 p-3 rounded-lg bg-violet-600 text-[var(--text)] font-black hover:bg-violet-500 transition-all uppercase tracking-widest text-[10px] shadow-lg shadow-violet-600/20"
           >
             Salvar
           </button>

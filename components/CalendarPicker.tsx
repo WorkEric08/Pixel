@@ -145,14 +145,14 @@ const CalendarPicker: React.FC<CalendarPickerProps> = ({ value, onChange, minDat
         <button 
           onClick={prevMonth} 
           disabled={!canGoPrev}
-          className={`p-1.5 rounded-full transition-colors ${canGoPrev ? 'hover:bg-slate-800 text-slate-400' : 'text-slate-700 cursor-not-allowed opacity-30'}`}
+          className={`p-1.5 rounded-full transition-colors ${canGoPrev ? 'hover:bg-[var(--frame)] text-slate-400' : 'text-slate-700 cursor-not-allowed opacity-30'}`}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
         </button>
         <div className="text-slate-100 font-bold text-[10px] uppercase tracking-widest pointer-events-none">
           {monthNames[month]} {year}
         </div>
-        <button onClick={nextMonth} className="p-1.5 hover:bg-slate-800 rounded-full text-slate-400 transition-colors">
+        <button onClick={nextMonth} className="p-1.5 hover:bg-[var(--frame)] rounded-full text-slate-400 transition-colors">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
         </button>
       </div>
