@@ -333,12 +333,8 @@ const App: React.FC = () => {
         <header className="relative flex items-center justify-between bg-[var(--header-bg)] p-2 md:p-3 rounded-xl border border-[var(--secondary)] border-opacity-20 backdrop-blur-2xl shadow-xl">
           {/* Esquerda: Logo */}
           <div className="flex items-center gap-3 pl-2 z-10">
-            <div className="relative w-10 h-10 bg-[#012b2a] rounded-xl flex items-center justify-center shadow-lg transition-transform hover:scale-105 border border-emerald-500/20">
-               <svg viewBox="0 0 100 100" className="w-7 h-7">
-                 <rect x="8" y="38" width="24" height="24" rx="4" fill="#12b886"/>
-                 <rect x="38" y="38" width="24" height="24" rx="4" fill="#12b886"/>
-                 <path d="M68 36 L94 49 L68 64 Z" fill="#12b886"/>
-               </svg>
+            <div className="relative w-10 h-10 transition-transform hover:scale-105 active:scale-95">
+               <img src="/logo.png" alt="Logo Pixel Line" className="w-full h-full object-contain rounded-xl shadow-lg border border-emerald-500/10" />
             </div>
             <div className="flex flex-col">
               <h1 className="text-xs md:text-sm font-black tracking-tighter leading-none">
