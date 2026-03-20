@@ -181,23 +181,7 @@ const App: React.FC = () => {
     };
   }, []);
 
-  // Ocultar a Splash Screen Híbrida (index.html) quando o React estiver pronto
-  useEffect(() => {
-    if (isAppReady) {
-      const splash = document.getElementById('app-splash');
-      if (splash) {
-        // Pequeno delay para garantir que o render do React foi impresso no DOM
-        const timeout = setTimeout(() => {
-          splash.style.opacity = '0';
-          setTimeout(() => {
-            splash.style.visibility = 'hidden';
-            splash.style.display = 'none';
-          }, 400);
-        }, 800);
-        return () => clearTimeout(timeout);
-      }
-    }
-  }, [isAppReady]);
+
 
   useEffect(() => {
     const stateToSave = {
