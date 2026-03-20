@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#020617">
+    <meta name="theme-color" content="#013032">
     <meta name="description" content="Pixel Line Pro — Seu contador de dias pixelado e jornada de metas.">
     
     <!-- PWA / iOS Meta Tags -->
@@ -262,6 +262,53 @@
                 padding-top: env(safe-area-inset-top, 0px);
             }
         }
+
+        /* Hybrid Splash Screen Styles */
+        #app-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #013032; /* Deep Teal matching PWA manifest */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .splash-logo {
+            width: 110px;
+            height: 110px;
+            margin-bottom: 2.5rem;
+            filter: drop-shadow(0 0 15px rgba(16,185,129,0.3));
+            animation: splash-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .pixel-loader {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pixel-dot {
+            width: 12px;
+            height: 12px;
+            background-color: #10b981;
+            box-shadow: 0 0 10px rgba(16,185,129,0.5);
+            animation: dot-pulse 1s infinite alternate;
+        }
+
+        @keyframes splash-pop {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes dot-pulse {
+            0% { transform: scale(0.8); opacity: 0.3; border-radius: 4px; }
+            100% { transform: scale(1.2); opacity: 1; border-radius: 2px; }
+        }
     </style>
 <script type="importmap">
 {
@@ -286,6 +333,16 @@
     </script>
 </head>
 <body>
+    <!-- Hybrid PWA Splash Screen -->
+    <div id="app-splash">
+        <img src="/logo.png" alt="Pixel Line" class="splash-logo">
+        <div class="pixel-loader">
+            <div class="pixel-dot" style="animation-delay: 0s"></div>
+            <div class="pixel-dot" style="animation-delay: 0.2s"></div>
+            <div class="pixel-dot" style="animation-delay: 0.4s"></div>
+        </div>
+    </div>
+
     <div id="root"></div>
 <script type="module" src="/index.tsx"></script>
 </body>

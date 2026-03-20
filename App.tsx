@@ -15,7 +15,6 @@ import ProfileModal from './components/ProfileModal';
 import SettingsModal from './components/SettingsModal';
 import EventModal from './components/EventModal';
 import ColorPickerModal from './components/ColorPickerModal';
-import SplashScreen from './components/SplashScreen';
 import DayDetailModal from './components/DayDetailModal';
 
 const App: React.FC = () => {
@@ -182,6 +181,24 @@ const App: React.FC = () => {
     };
   }, []);
 
+  // Ocultar a Splash Screen Híbrida (index.html) quando o React estiver pronto
+  useEffect(() => {
+    if (isAppReady) {
+      const splash = document.getElementById('app-splash');
+      if (splash) {
+        // Pequeno delay para garantir que o render do React foi impresso no DOM
+        const timeout = setTimeout(() => {
+          splash.style.opacity = '0';
+          setTimeout(() => {
+            splash.style.visibility = 'hidden';
+            splash.style.display = 'none';
+          }, 400);
+        }, 800);
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [isAppReady]);
+
   useEffect(() => {
     const stateToSave = {
       userName,
@@ -346,12 +363,7 @@ const App: React.FC = () => {
     setDraggedItemIndex(null);
   };
 
-  // Callback para completar splash screen (mantido para caso de abertura sob demanda futura)
-  const handleSplashComplete = useCallback(() => {
-    setIsAppReady(true);
-  }, []);
-
-  // Se não está pronto, mostrar vazio (splash automático removido)
+  // Se não está pronto, mostrar vazio (splash híbrido rodando no HTML)
   if (!isAppReady) {
     return null;
   }
