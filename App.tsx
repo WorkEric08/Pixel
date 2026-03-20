@@ -358,8 +358,8 @@ const App: React.FC = () => {
         <header className="relative flex items-center justify-between bg-[var(--header-bg)] p-2 md:p-3 rounded-2xl border border-[var(--secondary)] border-opacity-20 backdrop-blur-2xl shadow-xl">
           {/* Esquerda: Logo */}
           <div className="flex items-center gap-3 pl-2 z-10">
-            <div className="relative w-10 h-10 transition-transform hover:scale-105 active:scale-95 flex-shrink-0">
-               <img src="/logo.png" alt="Logo Pixel Line" className="w-full h-full object-contain drop-shadow-lg" />
+            <div className="relative w-10 h-10 transition-transform hover:scale-105 active:scale-95 flex-shrink-0 rounded-lg overflow-hidden border border-white/5">
+               <img src="/logo.png" alt="Logo Pixel Line" className="w-full h-full object-contain drop-shadow-lg rounded-lg" />
             </div>
             <h1 className="text-lg font-black tracking-[-0.05em] text-[var(--text)] uppercase hidden md:block">
                PIXEL<span className="text-emerald-500">LINE</span>
