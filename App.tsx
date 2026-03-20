@@ -357,11 +357,11 @@ const App: React.FC = () => {
       <div className={`max-w-4xl mx-auto p-4 md:p-8 ${isMobile && !isSettingsOpen && !isEventModalOpen ? 'pb-36' : 'pb-8'} flex flex-col gap-6 min-h-screen transition-all duration-1000 opacity-100`}>
         <header className="relative flex items-center justify-between bg-[var(--header-bg)] p-2 md:p-3 rounded-2xl border border-[var(--secondary)] border-opacity-20 backdrop-blur-2xl shadow-xl">
           {/* Esquerda: Logo */}
-          <div className="flex items-center gap-3 pl-2 z-10">
-            <div className="relative w-10 h-10 transition-transform hover:scale-105 active:scale-95 flex-shrink-0 rounded-lg overflow-hidden border border-white/5">
+          <div className="flex items-center gap-2 pl-1 z-10">
+            <div className="relative w-9 h-9 transition-transform hover:scale-105 active:scale-95 flex-shrink-0 rounded-lg overflow-hidden border border-white/5">
                <img src="/logo.png" alt="Logo Pixel Line" className="w-full h-full object-contain drop-shadow-lg rounded-lg" />
             </div>
-            <h1 className="text-lg font-black tracking-[-0.05em] text-[var(--text)] uppercase hidden md:block">
+            <h1 className="text-base md:text-lg font-black tracking-[-0.05em] text-[var(--text)] uppercase leading-none">
                PIXEL<span className="text-emerald-500">LINE</span>
             </h1>
           </div>
