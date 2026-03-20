@@ -411,7 +411,7 @@ const App: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <button onClick={() => setIsSettingsOpen(true)} className="group relative overflow-hidden bg-emerald-600 hover:bg-emerald-500 text-slate-950 p-4 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
-              Alterar Período
+              Alterar Objetivo
             </button>
             <button onClick={() => setIsEventModalOpen(true)} className="group relative overflow-hidden bg-violet-500 hover:bg-violet-400 text-white p-4 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
@@ -454,7 +454,7 @@ const App: React.FC = () => {
                   }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
-                  <span className="text-[8px] uppercase tracking-wider">Período</span>
+                  <span className="text-[8px] uppercase tracking-wider">Objetivo</span>
                 </button>
 
                 {/* Novo Evento */}
@@ -471,7 +471,7 @@ const App: React.FC = () => {
                   }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
-                  <span className="text-[8px] uppercase tracking-wider">Novo</span>
+                  <span className="text-[8px] uppercase tracking-wider">Evento</span>
                 </button>
 
                 {/* Instalar App (PWA) */}

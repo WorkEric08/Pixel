@@ -26,7 +26,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-xl">
-      <div className="bg-slate-900 w-full max-w-md rounded-xl p-6 md:p-8 border border-slate-700 shadow-2xl flex flex-col gap-5 animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-[var(--frame)] w-full max-w-md rounded-xl p-6 md:p-8 border border-[var(--borders)] shadow-2xl flex flex-col gap-5 animate-in fade-in zoom-in-95 duration-200">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-black text-[var(--text)] uppercase tracking-tighter">Novo Marco</h3>
           <button onClick={onClose} className="p-2 hover:bg-[var(--frame)] rounded-full text-slate-500 transition-colors">
@@ -42,7 +42,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ex: Viagem, Entrega..."
-              className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-4 py-3 text-[var(--text)] placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-all font-bold text-sm"
+              className="w-full bg-[var(--container)] border border-[var(--borders)] rounded-lg px-4 py-3 text-[var(--text)] placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-all font-bold text-sm"
             />
           </div>
 
@@ -51,10 +51,10 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
             <button 
               onClick={() => setShowCalendar(!showCalendar)}
               className={`w-full p-3.5 rounded-lg border flex items-center justify-between transition-all text-sm
-                ${showCalendar ? 'border-violet-500 bg-violet-500/5' : 'border-slate-700 bg-slate-950/50 hover:border-slate-600'}
+                ${showCalendar ? 'border-violet-500 bg-violet-500/5' : 'border-[var(--borders)] bg-[var(--container)] hover:border-violet-500/30'}
               `}
             >
-              <span className="text-slate-100 font-bold">{formatDateShort(date)}</span>
+              <span className="text-[var(--text)] font-bold">{formatDateShort(date)}</span>
               <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
             </button>
           </div>
@@ -74,7 +74,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
           <button onClick={onClose} className="flex-1 p-3 rounded-lg bg-[var(--frame)] text-[var(--text)] font-bold hover:bg-slate-700 transition-colors uppercase tracking-widest text-[10px]">Cancelar</button>
           <button 
             onClick={handleSave} 
-            className="flex-1 p-3 rounded-lg bg-violet-600 text-[var(--text)] font-black hover:bg-violet-500 transition-all uppercase tracking-widest text-[10px] shadow-lg shadow-violet-600/20"
+            className="flex-1 p-3 rounded-lg bg-violet-600 text-white font-black hover:bg-violet-500 transition-all uppercase tracking-widest text-[10px] shadow-lg shadow-violet-600/20"
           >
             Salvar
           </button>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pixel-line-cache-v7';
+const CACHE_NAME = 'pixel-line-cache-v9';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

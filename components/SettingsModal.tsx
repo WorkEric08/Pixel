@@ -87,11 +87,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 <button 
                   onClick={() => !isFirstRun && setActivePicker('start')}
                   className={`w-full p-3.5 rounded-xl border flex items-center justify-between transition-all text-sm
-                    ${activePicker === 'start' ? 'border-emerald-500 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'border-[var(--borders)] bg-slate-950/50 hover:border-[var(--borders)]'}
+                    ${activePicker === 'start' ? 'border-emerald-500 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'border-[var(--borders)] bg-[var(--container)] hover:border-emerald-500/30'}
                     ${isFirstRun ? 'opacity-60 cursor-default' : 'cursor-pointer'}
                   `}
                 >
-                  <span className="text-slate-100 font-bold">{formatDateShort(sDate)}</span>
+                  <span className="text-[var(--text)] font-bold">{formatDateShort(sDate)}</span>
                   <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </button>
               </div>
@@ -101,10 +101,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 <button 
                   onClick={() => setActivePicker('target')}
                   className={`w-full p-3.5 rounded-xl border flex items-center justify-between transition-all text-sm
-                    ${activePicker === 'target' ? 'border-emerald-500 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'border-[var(--borders)] bg-slate-950/50 hover:border-[var(--borders)]'}
+                    ${activePicker === 'target' ? 'border-emerald-500 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'border-[var(--borders)] bg-[var(--container)] hover:border-emerald-500/30'}
                   `}
                 >
-                  <span className="text-slate-100 font-bold">{formatDateShort(tDate)}</span>
+                  <span className="text-[var(--text)] font-bold">{formatDateShort(tDate)}</span>
                   <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </button>
               </div>
@@ -133,7 +133,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                   />
                 </div>
               ) : (
-                <div className="h-[280px] flex flex-col items-center justify-center text-center p-6 bg-slate-950/30 rounded-2xl border border-dashed border-[var(--borders)]">
+                <div className="h-[280px] flex flex-col items-center justify-center text-center p-6 bg-[var(--container)] rounded-2xl border border-dashed border-[var(--borders)]">
                   <svg className="w-10 h-10 text-slate-800 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest px-4 leading-relaxed opacity-60">Selecione uma data para ajustar o período.</p>
                 </div>
