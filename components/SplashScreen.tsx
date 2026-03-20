@@ -71,10 +71,10 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
         {/* Logo Pixel Central */}
         <div className="relative mb-16">
           <div className="w-24 h-24 bg-[#012b2a] border border-emerald-500/20 rounded-[2rem] flex items-center justify-center shadow-2xl">
-            <svg viewBox="0 0 100 100" className="w-12 h-12">
-              <rect x="15" y="40" width="18" height="18" rx="4" fill="#12b886"/>
-              <rect x="42" y="40" width="18" height="18" rx="4" fill="#12b886"/>
-              <path d="M70 40 L88 49 L70 58 Z" fill="#12b886"/>
+            <svg viewBox="0 0 100 100" className="w-14 h-14">
+              <rect x="8" y="38" width="24" height="24" rx="4" fill="#12b886"/>
+              <rect x="38" y="38" width="24" height="24" rx="4" fill="#12b886"/>
+              <path d="M68 36 L94 49 L68 64 Z" fill="#12b886"/>
             </svg>
           </div>
           {/* Anéis orbitais */}

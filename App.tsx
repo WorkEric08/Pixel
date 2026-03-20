@@ -333,10 +333,10 @@ const App: React.FC = () => {
           {/* Esquerda: Logo */}
           <div className="flex items-center gap-3 pl-2 z-10">
             <div className="relative w-10 h-10 bg-[#012b2a] rounded-xl flex items-center justify-center shadow-lg transition-transform hover:scale-105 border border-emerald-500/20">
-               <svg viewBox="0 0 100 100" className="w-6 h-6">
-                 <rect x="15" y="40" width="18" height="18" rx="4" fill="#12b886"/>
-                 <rect x="42" y="40" width="18" height="18" rx="4" fill="#12b886"/>
-                 <path d="M70 40 L88 49 L70 58 Z" fill="#12b886"/>
+               <svg viewBox="0 0 100 100" className="w-7 h-7">
+                 <rect x="8" y="38" width="24" height="24" rx="4" fill="#12b886"/>
+                 <rect x="38" y="38" width="24" height="24" rx="4" fill="#12b886"/>
+                 <path d="M68 36 L94 49 L68 64 Z" fill="#12b886"/>
                </svg>
             </div>
             <div className="flex flex-col">
