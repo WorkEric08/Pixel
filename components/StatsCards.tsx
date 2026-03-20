@@ -10,15 +10,15 @@ interface StatsProps {
 const StatsCards: React.FC<StatsProps> = ({ totalDays, workingDays, weeks }) => {
   return (
     <div className="grid grid-cols-3 gap-3 w-full">
-      <div className="bg-[var(--bg)] bg-opacity-50 p-2 md:p-3 rounded-lg flex flex-col items-center text-center transition-all hover:scale-[1.02] border border-[var(--secondary)] border-opacity-10">
+      <div className="bg-[var(--frame)] bg-opacity-50 p-2 md:p-3 rounded-lg flex flex-col items-center text-center transition-all hover:scale-[1.02] border border-[var(--secondary)] border-opacity-10">
         <span className="text-lg md:text-xl font-black mb-1 leading-none">{totalDays}</span>
         <span className="text-[7px] md:text-[8px] font-black text-emerald-500 uppercase tracking-wider">Dias restantes</span>
       </div>
-      <div className="bg-[var(--bg)] bg-opacity-50 p-2 md:p-3 rounded-lg flex flex-col items-center text-center transition-all hover:scale-[1.02] border border-[var(--secondary)] border-opacity-10">
+      <div className="bg-[var(--frame)] bg-opacity-50 p-2 md:p-3 rounded-lg flex flex-col items-center text-center transition-all hover:scale-[1.02] border border-[var(--secondary)] border-opacity-10">
         <span className="text-lg md:text-xl font-black mb-1 leading-none">{workingDays}</span>
         <span className="text-[7px] md:text-[8px] font-black text-emerald-500 uppercase tracking-wider">Dias úteis</span>
       </div>
-      <div className="bg-[var(--bg)] bg-opacity-50 p-2 md:p-3 rounded-lg flex flex-col items-center text-center transition-all hover:scale-[1.02] border border-[var(--secondary)] border-opacity-10">
+      <div className="bg-[var(--frame)] bg-opacity-50 p-2 md:p-3 rounded-lg flex flex-col items-center text-center transition-all hover:scale-[1.02] border border-[var(--secondary)] border-opacity-10">
         <span className="text-lg md:text-xl font-black mb-1 leading-none">{weeks}</span>
         <span className="text-[7px] md:text-[8px] font-black text-emerald-500 uppercase tracking-wider">Semanas</span>
       </div>

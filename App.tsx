@@ -420,7 +420,7 @@ const App: React.FC = () => {
           </div>
         ) : (
           !isSettingsOpen && !isEventModalOpen && (
-            <div className="fixed bottom-0 left-0 right-0 bg-[#0a0a0c]/98 backdrop-blur-xl border-t border-white/5 z-[100] shadow-[0_-8px_30px_rgba(0,0,0,0.5)] after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[#0a0a0c]" style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom, 10px))', paddingTop: '0.5rem', paddingLeft: '1rem', paddingRight: '1rem' }}>
+            <div className="fixed bottom-0 left-0 right-0 bg-[var(--header-bg)] backdrop-blur-xl border-t border-[var(--borders)] z-[100] shadow-[0_-8px_30px_rgba(0,0,0,0.15)] after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[var(--frame)]" style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom, 10px))', paddingTop: '0.5rem', paddingLeft: '1rem', paddingRight: '1rem' }}>
               <div className={`grid ${deferredPrompt ? 'grid-cols-4' : 'grid-cols-3'} gap-2 max-w-4xl mx-auto`}>
                 {/* Home */}
                 <button 
@@ -432,8 +432,8 @@ const App: React.FC = () => {
                   }}
                   className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 ${
                     activeTab === 'home' 
-                      ? 'bg-[#1a2332] text-[#22c55e] shadow-lg shadow-black/20' 
-                      : 'bg-[#1e293b]/70 text-[#94a3b8] hover:bg-[#1e293b]'
+                      ? 'bg-[var(--frame)] text-[var(--accent)] shadow-lg shadow-[rgba(0,0,0,0.1)]' 
+                      : 'bg-[var(--container)] text-[var(--secondary)] hover:bg-[var(--frame)]/70'
                   }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
@@ -447,10 +447,10 @@ const App: React.FC = () => {
                     if (typeof navigator.vibrate === 'function') navigator.vibrate(10);
                     setIsSettingsOpen(true);
                   }}
-                  className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 text-slate-950 ${
+                  className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 ${
                     activeTab === 'period'
-                      ? 'bg-[#0f7652] shadow-lg shadow-black/20 text-[#f8fafc]'
-                      : 'bg-[#0f7652]/90 hover:bg-[#0f7652] text-[#f8fafc]'
+                      ? 'bg-[var(--accent)] text-white shadow-lg shadow-[rgba(0,0,0,0.1)]'
+                      : 'bg-[var(--accent)]/90 hover:bg-[var(--accent)] text-white'
                   }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
@@ -466,8 +466,8 @@ const App: React.FC = () => {
                   }}
                   className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 text-white ${
                     activeTab === 'event'
-                      ? 'bg-[#6d28d9] shadow-lg shadow-black/20'
-                      : 'bg-[#6d28d9]/90 hover:bg-[#6d28d9]'
+                      ? 'bg-[var(--event)] shadow-lg shadow-[rgba(0,0,0,0.1)]'
+                      : 'bg-[var(--event)]/90 hover:bg-[var(--event)]'
                   }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
