@@ -32,7 +32,7 @@ const App: React.FC = () => {
     special: '#ffffff'
   };
 
-  const [isAppReady, setIsAppReady] = useState(false);
+  const [isAppReady, setIsAppReady] = useState(true);
   const [isStandalone, setIsStandalone] = useState(false);
   const [activeTab, setActiveTab] = useState<'home' | 'period' | 'event'>('home');
   const [userName, setUserName] = useState<string>('');
@@ -142,7 +142,7 @@ const App: React.FC = () => {
     window.addEventListener('beforeinstallprompt', handleBeforeInstall);
     window.addEventListener('appinstalled', handleAppInstalled);
 
-    // Detecção de modo standalone (PWA instalado)
+    // Detecção de compatibilidade de navegador para PWA
     const ua = navigator.userAgent;
     const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
     const standaloneMode = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
@@ -154,12 +154,6 @@ const App: React.FC = () => {
       if (!isChrome && !isSafari) {
         setShowBrowserTip(true);
       }
-    }
-
-    // Se estiver em modo standalone (PWA), mostrar splash screen
-    // Se estiver no browser normal, pular direto
-    if (!standaloneMode) {
-      setIsAppReady(true);
     }
 
     // Prevenção de pull-to-refresh via JavaScript (PWA mode)
@@ -352,17 +346,12 @@ const App: React.FC = () => {
     setDraggedItemIndex(null);
   };
 
-  // Callback para completar splash screen
+  // Callback para completar splash screen (mantido para caso de abertura sob demanda futura)
   const handleSplashComplete = useCallback(() => {
     setIsAppReady(true);
   }, []);
 
-  // Se não está pronto e está em modo standalone, mostrar splash
-  if (!isAppReady && isStandalone) {
-    return <SplashScreen onComplete={handleSplashComplete} />;
-  }
-
-  // Se não está pronto (browser normal), mostrar vazio brevemente
+  // Se não está pronto, mostrar vazio (splash automático removido)
   if (!isAppReady) {
     return null;
   }
@@ -370,18 +359,13 @@ const App: React.FC = () => {
   return (
     <>
       <div className={`max-w-4xl mx-auto p-4 md:p-8 ${isMobile && !isSettingsOpen && !isEventModalOpen ? 'pb-36' : 'pb-8'} flex flex-col gap-6 min-h-screen transition-all duration-1000 opacity-100`}>
-        <header className="relative flex items-center justify-between bg-[var(--header-bg)] p-2 md:p-3 rounded-xl border border-[var(--secondary)] border-opacity-20 backdrop-blur-2xl shadow-xl">
+        <header className="relative flex items-center justify-between bg-[var(--header-bg)] p-2 md:p-3 rounded-2xl border border-[var(--secondary)] border-opacity-20 backdrop-blur-2xl shadow-xl">
           {/* Esquerda: Logo */}
-          <div className="flex items-center gap-3 pl-2 z-10">
-            <div className="relative w-10 h-10 transition-transform hover:scale-105 active:scale-95">
-               <img src="/logo.png" alt="Logo Pixel Line" className="w-full h-full object-contain rounded-xl shadow-lg border border-emerald-500/10" />
+          <div className="flex items-center gap-3 pl-2 z-10 w-full md:w-auto">
+            <div className="relative w-12 h-12 transition-transform hover:scale-105 active:scale-95 flex-shrink-0">
+               <img src="/logo.png" alt="Logo Pixel Line" className="w-full h-full object-contain drop-shadow-lg" />
             </div>
-            <div className="flex flex-col">
-              <h1 className="text-xs md:text-sm font-black tracking-tighter leading-none">
-                PIXEL <span className="text-[#12b886]">LINE</span>
-              </h1>
-              <span className="text-[5px] uppercase tracking-[0.2em] text-[var(--secondary)] font-bold">Pixel Journey</span>
-            </div>
+            {/* Texto Header removido conforme solicitação */}
           </div>
           
           {/* Direita: Perfil e Tema */}
@@ -438,8 +422,8 @@ const App: React.FC = () => {
           </div>
         ) : (
           !isSettingsOpen && !isEventModalOpen && (
-            <div className="fixed bottom-0 left-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-xl border-t border-white/5 z-[100] shadow-[0_-8px_30px_rgba(0,0,0,0.5)] after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[#0a0a0c]" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 12px))', paddingTop: '0.5rem', paddingLeft: '1rem', paddingRight: '1rem' }}>
-              <div className={`grid ${deferredPrompt ? 'grid-cols-4' : 'grid-cols-3'} gap-2 max-w-4xl mx-auto`}>
+            <div className="fixed bottom-0 left-0 right-0 bg-[#0a0a0c]/98 backdrop-blur-xl border-t border-white/5 z-[100] shadow-[0_-8px_30px_rgba(0,0,0,0.5)] after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[#0a0a0c]" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 12px))', paddingTop: '0.75rem', paddingLeft: '1rem', paddingRight: '1rem' }}>
+              <div className={`grid ${deferredPrompt ? 'grid-cols-4' : 'grid-cols-3'} gap-2 md:gap-3 max-w-4xl mx-auto`}>
                 {/* Home */}
                 <button 
                   onClick={() => {
@@ -448,15 +432,14 @@ const App: React.FC = () => {
                     if (typeof navigator.vibrate === 'function') navigator.vibrate(10);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-300 font-black active:scale-90 ${
+                  className={`relative flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 ${
                     activeTab === 'home' 
-                      ? 'bg-slate-800 text-emerald-400 shadow-lg shadow-emerald-500/10' 
-                      : 'bg-transparent text-[var(--secondary)]'
+                      ? 'bg-[#1a2332] text-[#22c55e] shadow-lg shadow-black/20' 
+                      : 'bg-[#1e293b]/70 text-[#94a3b8] hover:bg-[#1e293b]'
                   }`}
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
-                  <span className="text-[7px] uppercase tracking-tighter">Início</span>
-                  {activeTab === 'home' && <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[3px] bg-emerald-400 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.6)]" />}
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                  <span className="text-[9px] uppercase tracking-wider">Início</span>
                 </button>
 
                 {/* Alterar Período */}
@@ -466,15 +449,14 @@ const App: React.FC = () => {
                     if (typeof navigator.vibrate === 'function') navigator.vibrate(10);
                     setIsSettingsOpen(true);
                   }}
-                  className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-300 font-black active:scale-90 ${
+                  className={`relative flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 text-slate-950 ${
                     activeTab === 'period'
-                      ? 'bg-emerald-600 text-slate-950 shadow-lg shadow-emerald-500/20'
-                      : 'bg-emerald-600/80 text-slate-950'
+                      ? 'bg-[#0f7652] shadow-lg shadow-black/20 text-[#f8fafc]'
+                      : 'bg-[#0f7652]/90 hover:bg-[#0f7652] text-[#f8fafc]'
                   }`}
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
-                  <span className="text-[7px] uppercase tracking-tighter">Período</span>
-                  {activeTab === 'period' && <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[3px] bg-emerald-300 rounded-full" />}
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
+                  <span className="text-[9px] uppercase tracking-wider">Período</span>
                 </button>
 
                 {/* Novo Evento */}
@@ -484,15 +466,14 @@ const App: React.FC = () => {
                     if (typeof navigator.vibrate === 'function') navigator.vibrate(10);
                     setIsEventModalOpen(true);
                   }}
-                  className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-300 font-black active:scale-90 ${
+                  className={`relative flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 text-white ${
                     activeTab === 'event'
-                      ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20'
-                      : 'bg-violet-600/80 text-white'
+                      ? 'bg-[#6d28d9] shadow-lg shadow-black/20'
+                      : 'bg-[#6d28d9]/90 hover:bg-[#6d28d9]'
                   }`}
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
-                  <span className="text-[7px] uppercase tracking-tighter">Novo</span>
-                  {activeTab === 'event' && <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[3px] bg-violet-300 rounded-full" />}
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
+                  <span className="text-[9px] uppercase tracking-wider">Novo</span>
                 </button>
 
                 {/* Instalar App (PWA) */}
@@ -505,10 +486,10 @@ const App: React.FC = () => {
                         if (choice.outcome === 'accepted') setDeferredPrompt(null);
                       });
                     }}
-                    className="relative flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-blue-600 text-white active:scale-90 transition-all duration-300 font-black"
+                    className="relative flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 text-white bg-[#2563eb] hover:bg-[#1d4ed8] shadow-lg shadow-black/20"
                   >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
-                    <span className="text-[7px] uppercase tracking-tighter">Instalar</span>
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                    <span className="text-[9px] uppercase tracking-wider">Instalar</span>
                   </button>
                 )}
               </div>
