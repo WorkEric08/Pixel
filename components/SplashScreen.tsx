@@ -59,6 +59,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
       className={`fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-[#020617] transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${
         isVisible ? 'opacity-100' : 'opacity-0 scale-110 blur-2xl'
       }`}
+      style={{ touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none' }}
     >
       {/* Background Decorativo - Centro Radiante */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-500/10 via-transparent to-transparent opacity-50"></div>
@@ -68,14 +69,15 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
 
       <div className="relative z-10 flex flex-col items-center">
         
-        {/* Logo Pixel Central */}
+        {/* Logo Real do App */}
         <div className="relative mb-16">
-          <div className="w-24 h-24 bg-[#012b2a] border border-emerald-500/20 rounded-[2rem] flex items-center justify-center shadow-2xl">
-            <svg viewBox="0 0 100 100" className="w-14 h-14">
-              <rect x="8" y="38" width="24" height="24" rx="4" fill="#12b886"/>
-              <rect x="38" y="38" width="24" height="24" rx="4" fill="#12b886"/>
-              <path d="M68 36 L94 49 L68 64 Z" fill="#12b886"/>
-            </svg>
+          <div className="w-28 h-28 rounded-[2rem] flex items-center justify-center shadow-2xl overflow-hidden">
+            <img 
+              src="/logo.png" 
+              alt="Pixel Line Pro" 
+              className="w-full h-full object-cover animate-reveal"
+              draggable={false}
+            />
           </div>
           {/* Anéis orbitais */}
           <div className="absolute -inset-6 border border-emerald-500/10 rounded-full animate-ping opacity-20"></div>
@@ -115,7 +117,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
-      `}</style>
+      `}
+      </style>
     </div>
   );
 };

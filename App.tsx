@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { EventItem, CustomColors, MoodConfig } from './types';
 import { 
   getDaysBetween, 
@@ -32,7 +32,9 @@ const App: React.FC = () => {
     special: '#ffffff'
   };
 
-  const [isAppReady, setIsAppReady] = useState(true);
+  const [isAppReady, setIsAppReady] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
+  const [activeTab, setActiveTab] = useState<'home' | 'period' | 'event'>('home');
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
   const [userBio, setUserBio] = useState<string>('');
@@ -140,12 +142,13 @@ const App: React.FC = () => {
     window.addEventListener('beforeinstallprompt', handleBeforeInstall);
     window.addEventListener('appinstalled', handleAppInstalled);
 
-    // Detecção de compatibilidade de navegador para PWA
+    // Detecção de modo standalone (PWA instalado)
     const ua = navigator.userAgent;
     const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
+    const standaloneMode = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
+    setIsStandalone(!!standaloneMode);
     
-    if (isMobileDevice && !isStandalone) {
+    if (isMobileDevice && !standaloneMode) {
       const isChrome = /Chrome/.test(ua) || /CriOS/.test(ua);
       const isSafari = /Safari/.test(ua) && !/Chrome/.test(ua) && !/CriOS/.test(ua);
       if (!isChrome && !isSafari) {
@@ -153,13 +156,35 @@ const App: React.FC = () => {
       }
     }
 
-    // Marca como pronto imediatamente
-    setIsAppReady(true);
+    // Se estiver em modo standalone (PWA), mostrar splash screen
+    // Se estiver no browser normal, pular direto
+    if (!standaloneMode) {
+      setIsAppReady(true);
+    }
+
+    // Prevenção de pull-to-refresh via JavaScript (PWA mode)
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      const touchY = e.touches[0].clientY;
+      const scrollTop = document.getElementById('root')?.scrollTop || 0;
+      // Se estiver no topo e puxando para baixo, prevenir refresh
+      if (scrollTop <= 0 && touchY > touchStartY) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
 
     return () => {
       window.removeEventListener('resize', checkMobile);
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
       window.removeEventListener('appinstalled', handleAppInstalled);
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchmove', handleTouchMove);
     };
   }, []);
 
@@ -327,6 +352,21 @@ const App: React.FC = () => {
     setDraggedItemIndex(null);
   };
 
+  // Callback para completar splash screen
+  const handleSplashComplete = useCallback(() => {
+    setIsAppReady(true);
+  }, []);
+
+  // Se não está pronto e está em modo standalone, mostrar splash
+  if (!isAppReady && isStandalone) {
+    return <SplashScreen onComplete={handleSplashComplete} />;
+  }
+
+  // Se não está pronto (browser normal), mostrar vazio brevemente
+  if (!isAppReady) {
+    return null;
+  }
+
   return (
     <>
       <div className={`max-w-4xl mx-auto p-4 md:p-8 ${isMobile && !isSettingsOpen && !isEventModalOpen ? 'pb-36' : 'pb-8'} flex flex-col gap-6 min-h-screen transition-all duration-1000 opacity-100`}>
@@ -398,48 +438,74 @@ const App: React.FC = () => {
           </div>
         ) : (
           !isSettingsOpen && !isEventModalOpen && (
-            <div className="fixed bottom-0 left-0 right-0 p-4 pb-[calc(1.5rem + env(safe-area-inset-bottom, 12px))] bg-[#0a0a0c] border-t border-white/5 z-[100] shadow-2xl animate-in slide-in-from-bottom-full duration-500 after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[#0a0a0c]">
+            <div className="fixed bottom-0 left-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-xl border-t border-white/5 z-[100] shadow-[0_-8px_30px_rgba(0,0,0,0.5)] after:content-[''] after:absolute after:top-full after:left-0 after:right-0 after:h-[400px] after:bg-[#0a0a0c]" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 12px))', paddingTop: '0.5rem', paddingLeft: '1rem', paddingRight: '1rem' }}>
               <div className={`grid ${deferredPrompt ? 'grid-cols-4' : 'grid-cols-3'} gap-2 max-w-4xl mx-auto`}>
                 {/* Home */}
                 <button 
                   onClick={() => {
+                    setActiveTab('home');
                     setActiveEventId(null);
+                    if (typeof navigator.vibrate === 'function') navigator.vibrate(10);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-slate-900 border border-white/5 text-[var(--secondary)] active:scale-90 transition-all font-black"
+                  className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-300 font-black active:scale-90 ${
+                    activeTab === 'home' 
+                      ? 'bg-slate-800 text-emerald-400 shadow-lg shadow-emerald-500/10' 
+                      : 'bg-transparent text-[var(--secondary)]'
+                  }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
                   <span className="text-[7px] uppercase tracking-tighter">Início</span>
+                  {activeTab === 'home' && <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[3px] bg-emerald-400 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.6)]" />}
                 </button>
 
                 {/* Alterar Período */}
                 <button 
-                  onClick={() => setIsSettingsOpen(true)}
-                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-emerald-600 text-slate-950 active:scale-90 transition-all font-black"
+                  onClick={() => {
+                    setActiveTab('period');
+                    if (typeof navigator.vibrate === 'function') navigator.vibrate(10);
+                    setIsSettingsOpen(true);
+                  }}
+                  className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-300 font-black active:scale-90 ${
+                    activeTab === 'period'
+                      ? 'bg-emerald-600 text-slate-950 shadow-lg shadow-emerald-500/20'
+                      : 'bg-emerald-600/80 text-slate-950'
+                  }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
                   <span className="text-[7px] uppercase tracking-tighter">Período</span>
+                  {activeTab === 'period' && <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[3px] bg-emerald-300 rounded-full" />}
                 </button>
 
                 {/* Novo Evento */}
                 <button 
-                  onClick={() => setIsEventModalOpen(true)}
-                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-violet-600 text-white active:scale-90 transition-all font-black"
+                  onClick={() => {
+                    setActiveTab('event');
+                    if (typeof navigator.vibrate === 'function') navigator.vibrate(10);
+                    setIsEventModalOpen(true);
+                  }}
+                  className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-300 font-black active:scale-90 ${
+                    activeTab === 'event'
+                      ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20'
+                      : 'bg-violet-600/80 text-white'
+                  }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
                   <span className="text-[7px] uppercase tracking-tighter">Novo</span>
+                  {activeTab === 'event' && <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[3px] bg-violet-300 rounded-full" />}
                 </button>
 
                 {/* Instalar App (PWA) */}
                 {deferredPrompt && (
                   <button 
                     onClick={() => {
+                      if (typeof navigator.vibrate === 'function') navigator.vibrate(15);
                       deferredPrompt.prompt();
                       deferredPrompt.userChoice.then((choice: any) => {
                         if (choice.outcome === 'accepted') setDeferredPrompt(null);
                       });
                     }}
-                    className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-blue-600 text-white active:scale-90 transition-all font-black"
+                    className="relative flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-blue-600 text-white active:scale-90 transition-all duration-300 font-black"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
                     <span className="text-[7px] uppercase tracking-tighter">Instalar</span>

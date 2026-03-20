@@ -3,8 +3,21 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#020617">
+    <meta name="description" content="Pixel Line Pro — Seu contador de dias pixelado e jornada de metas.">
+    
+    <!-- PWA / iOS Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Pixel Line">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="/logo.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/logo.png">
+    
     <title>Pixel line Pro — Contador de Dias</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,6 +55,10 @@
 
             /* Picker Thumb Color */
             --pixel-thumb: #e2e8f0;
+
+            /* Safe area insets */
+            --sab: env(safe-area-inset-bottom, 0px);
+            --sat: env(safe-area-inset-top, 0px);
         }
 
         :root.light {
@@ -69,15 +86,71 @@
             --pixel-border: rgba(0, 0, 0, 0.1);
         }
 
+        /* ===== PWA Native Behavior ===== */
+        html {
+            overscroll-behavior: none;
+            overscroll-behavior-y: none;
+            -webkit-overflow-scrolling: touch;
+            height: 100%;
+            /* Prevent pull-to-refresh */
+            overflow: hidden;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: #020617;
             color: var(--text);
             margin: 0;
+            padding: 0;
+            overscroll-behavior: none;
             overscroll-behavior-y: none;
             -webkit-font-smoothing: antialiased;
             transition: background-color 0.3s ease, color 0.3s ease;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            /* Disable pull-to-refresh */
+            -webkit-overflow-scrolling: touch;
         }
+
+        /* Prevent text selection on UI elements (not inputs) */
+        button, label, span, h1, h2, h3, h4, h5, h6, p, div, header, footer, nav {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        /* Allow text selection on inputs and textareas */
+        input, textarea, [contenteditable="true"] {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+            -webkit-touch-callout: default;
+        }
+
+        /* Prevent context menu on long press */
+        img, a {
+            -webkit-touch-callout: none;
+        }
+
+        /* Prevent tap highlight */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Smooth scroll behavior for app containers */
+        #root {
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior-y: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* ===== End PWA Native ===== */
 
         /* Custom scrollbar */
         ::-webkit-scrollbar {
@@ -173,6 +246,21 @@
         
         .animate-reveal {
             animation: pixel-reveal 0.5s ease-out forwards;
+        }
+
+        /* Safe area padding for PWA bottom bar */
+        @supports (padding: max(0px)) {
+            .pwa-safe-bottom {
+                padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 12px));
+            }
+        }
+
+        /* Standalone mode specific styles */
+        @media all and (display-mode: standalone) {
+            body {
+                /* Extra padding for status bar */
+                padding-top: env(safe-area-inset-top, 0px);
+            }
         }
     </style>
 <script type="importmap">
