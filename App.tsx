@@ -409,11 +409,11 @@ const App: React.FC = () => {
         {/* Navegação Mobile / Desktop */}
         {!isMobile ? (
           <div className="grid grid-cols-2 gap-4">
-            <button onClick={() => setIsSettingsOpen(true)} className="group relative overflow-hidden bg-emerald-600 hover:bg-emerald-500 text-slate-950 p-4 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
+            <button onClick={() => setIsSettingsOpen(true)} className="group relative overflow-hidden bg-[var(--container)] hover:bg-[var(--frame)] text-white p-4 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95 border border-white/5">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
               Alterar Objetivo
             </button>
-            <button onClick={() => setIsEventModalOpen(true)} className="group relative overflow-hidden bg-violet-500 hover:bg-violet-400 text-white p-4 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95">
+            <button onClick={() => setIsEventModalOpen(true)} className="group relative overflow-hidden bg-[var(--container)] hover:bg-[var(--frame)] text-white p-4 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95 border border-white/5">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
               Novo Evento
             </button>
@@ -449,8 +449,8 @@ const App: React.FC = () => {
                   }}
                   className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 ${
                     activeTab === 'period'
-                      ? 'bg-[var(--accent)] text-white shadow-lg shadow-[rgba(0,0,0,0.1)]'
-                      : 'bg-[var(--accent)]/90 hover:bg-[var(--accent)] text-white'
+                      ? 'bg-[var(--frame)] text-white shadow-lg shadow-[rgba(0,0,0,0.1)]' 
+                      : 'bg-[var(--container)] text-white/70 hover:text-white hover:bg-[var(--frame)]/70'
                   }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" /></svg>
@@ -464,10 +464,10 @@ const App: React.FC = () => {
                     if (typeof navigator.vibrate === 'function') navigator.vibrate(10);
                     setIsEventModalOpen(true);
                   }}
-                  className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 text-white ${
+                  className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-2xl transition-all duration-300 font-extrabold active:scale-95 ${
                     activeTab === 'event'
-                      ? 'bg-[var(--event)] shadow-lg shadow-[rgba(0,0,0,0.1)]'
-                      : 'bg-[var(--event)]/90 hover:bg-[var(--event)]'
+                      ? 'bg-[var(--frame)] text-white shadow-lg shadow-[rgba(0,0,0,0.1)]'
+                      : 'bg-[var(--container)] text-white/70 hover:text-white hover:bg-[var(--frame)]/70'
                   }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
